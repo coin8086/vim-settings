@@ -1,0 +1,38 @@
+#!/bin/bash
+
+function show_help
+{
+  echo "
+Usage: $0 [-f]
+Options:
+-f: Remove existing ~/.vimrc and ~/.vim if any
+  "
+}
+
+while getopts "fh" opt; do
+  case $opt in
+    f ) force=1 ;;
+    h ) show_help && exit ;;
+    ? ) show_help && exit 1 ;;
+  esac
+done
+shift $(($OPTIND - 1))
+
+if [[ -a ~/.vimrc || -a ~/.vim ]]; then
+  if [[ "$force" = "" ]]; then
+    echo "~/.vimrc or ~/.vim already exists! Remove them first or run with option '-f'."
+    exit 1
+  else
+    rm -rf ~/.vimrc ~/.vim
+  fi
+fi
+
+wd="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
+cd "$wd"
+
+ln -s "$wd/vimrc" ~/.vimrc
+
+mkdir ~/.vim
+for f in vim/*; do
+  ln -s "$wd/$f" ~/.vim/"${f#vim/}"
+done
