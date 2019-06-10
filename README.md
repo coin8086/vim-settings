@@ -2,9 +2,9 @@
 
 1. Clone with submodules
 
-  ```bash
-  git clone --recurse-submodules https://github.com/coin8086/vim-settings.git
-  ```
+```bash
+git clone --recurse-submodules https://github.com/coin8086/vim-settings.git
+```
 
 2. Install
 
@@ -12,7 +12,7 @@
 cd vim-settings && ./install
 ```
 
-You may need to add option `-f` for `install` to remove old `~/.vim` and `~/.vimrc` files for you.
+You may need option `-f` to remove old `~/.vim` and `~/.vimrc` files before installation.
 
 ```bash
 ./install -f
