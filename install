@@ -1,11 +1,16 @@
 #!/bin/bash
 
+wd="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
+target_dir=${target_dir:-"$HOME"}
+files=(".vimrc" ".vim")
+
 function show_help
 {
   echo "
-Usage: $0 [-f]
+$0 [-f]
+Install the following files to $target_dir: ${files[*]}
 Options:
--f: Remove existing ~/.vimrc and ~/.vim if any
+-f: Remove existing target file
   "
 }
 
@@ -18,21 +23,21 @@ while getopts "fh" opt; do
 done
 shift $(($OPTIND - 1))
 
-if [[ -a ~/.vimrc || -a ~/.vim ]]; then
-  if [[ "$force" = "" ]]; then
-    echo "~/.vimrc or ~/.vim already exists! Remove them first or run with option '-f'."
-    exit 1
-  else
-    rm -rf ~/.vimrc ~/.vim
+for f in "${files[@]}"; do
+  if [[ -a "$target_dir/$f" ]]; then
+    if [[ "$force" = "" ]]; then
+      echo "$target_dir/$f already exists! Remove it before installation or run with option '-f'."
+      exit 1
+    else
+      rm -rf "$target_dir/$f"
+    fi
   fi
-fi
+done
 
-wd="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
+ln -sf "$wd/vimrc" "$target_dir"/.vimrc
+
+mkdir "$target_dir"/.vim
 cd "$wd"
-
-ln -s "$wd/vimrc" ~/.vimrc
-
-mkdir ~/.vim
 for f in vim/*; do
-  ln -s "$wd/$f" ~/.vim/"${f#vim/}"
+  ln -s "$wd/$f" "$target_dir"/.vim/"${f#vim/}"
 done
