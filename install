@@ -34,8 +34,10 @@ for f in "${files[@]}"; do
   fi
 done
 
+echo "Installing $target_dir/.vimrc"
 ln -sf "$wd/vimrc" "$target_dir"/.vimrc
 
+echo "Installing $target_dir/.vim"
 mkdir "$target_dir"/.vim
 cd "$wd"
 for f in vim/*; do
