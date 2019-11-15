@@ -1,41 +1,22 @@
 #!/bin/bash
 
 wd="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
+
 target_dir=${target_dir:-"$HOME"}
 files=(".vimrc" ".vim")
 
-function show_help
-{
-  echo "
-$0 [-f]
-Install the following files to $target_dir: ${files[*]}
-Options:
--f: Remove existing target file
-  "
-}
+if [ -f "$wd/../install.base" ]; then
+  . "$wd/../install.base"
 
-while getopts "fh" opt; do
-  case $opt in
-    f ) force=1 ;;
-    h ) show_help && exit ;;
-    ? ) show_help && exit 1 ;;
-  esac
-done
-shift $(($OPTIND - 1))
-
-for f in "${files[@]}"; do
-  if [[ -a "$target_dir/$f" ]]; then
-    if [[ "$force" = "" ]]; then
-      echo "$target_dir/$f already exists! Remove it before installation or run with option '-f'."
-      exit 1
-    else
-      rm -rf "$target_dir/$f"
-    fi
-  fi
-done
+  # NOTE: process_cmd_line requires the following global variables:
+  #   * target_dir
+  #   * files
+  # The requirment is due to Bash's limitation on passing array variables.
+  process_cmd_line "$@"
+fi
 
 echo "Installing $target_dir/.vimrc"
-ln -sf "$wd/vimrc" "$target_dir"/.vimrc
+ln -s "$wd/vimrc" "$target_dir"/.vimrc
 
 echo "Installing $target_dir/.vim"
 mkdir "$target_dir"/.vim
