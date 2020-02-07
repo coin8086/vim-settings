@@ -31,6 +31,9 @@ set statusline=%m%F:%l:%c\ [%p%%]%r%h%w[%{&ff}]
 " Always show the status line
 set laststatus=2
 
+" Disable beep
+set visualbell
+
 " Enter shell
 " To map <C-S> in Bash you may need the following line in .bashrc
 " stty -ixon
