@@ -1,3 +1,9 @@
+" Set $HOME/.vim as the first location in runtimepath for Windows, so that
+" .vim can work for both vim and gvim.
+if has('win32') || has('win64')
+  set runtimepath=~/.vim,~/vimfiles,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/vimfiles/after,~/.vim/after
+endif
+
 " If Pathogen is not installed, just ignore/disable the error.
 silent! execute pathogen#infect()
 
