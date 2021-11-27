@@ -69,8 +69,8 @@ map + <C-W>+
 " Make the other window(like quickfix window) smaller
 map _ <C-W>-
 
-" Find current word in files(but don't jump to the first match by appending '!')
-map <F2> :grep! -I -r --exclude-dir '.git' -w <C-R><C-W> .
+" Toggle Paste mode
+set pastetoggle=<F2>
 
 " Open quickfix window
 map <F3> :copen<CR>
